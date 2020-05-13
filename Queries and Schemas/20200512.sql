@@ -90,7 +90,8 @@ WHERE cod = 10002
 UPDATE Edicao SET estoque -= 2
 WHERE isbn = 130661023
 
-DELETE Autor WHERE cod = 10004
+DELETE Autor 
+WHERE cod = 10004
 
 SELECT * FROM Livro
 SELECT * FROM Autor
