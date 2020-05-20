@@ -43,7 +43,7 @@ CREATE TABLE Livro_Autor (
 	cod_autor	INT NOT NULL,
 	PRIMARY KEY(cod_livro, cod_autor),
 	FOREIGN KEY(cod_livro) REFERENCES Livro(cod),
-	FOREIGN KEY(cod_autor) REFERENCES Autor(cod),
+	FOREIGN KEY(cod_autor) REFERENCES Autor(cod)
 )	
 
 CREATE TABLE Livro_Edicao_Editora (
@@ -96,4 +96,4 @@ WHERE cod = 10004
 SELECT * FROM Livro
 SELECT * FROM Autor
 SELECT * FROM Livro_Autor
-SELECT * FROM Edicao
+SELECT * FROM Edicaor
