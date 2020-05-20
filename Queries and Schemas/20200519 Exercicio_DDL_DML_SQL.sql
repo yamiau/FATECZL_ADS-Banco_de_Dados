@@ -50,6 +50,7 @@ CREATE TABLE projects (
 )
 ALTER TABLE users DROP CONSTRAINT username_unique
 ALTER TABLE users ALTER COLUMN username VARCHAR(10)
+ALTER TABLE users ADD CONSTRAINT username_unique UNIQUE (username)
 ALTER TABLE users ALTER COLUMN password VARCHAR(8)
 
 CREATE TABLE users_have_projects (
