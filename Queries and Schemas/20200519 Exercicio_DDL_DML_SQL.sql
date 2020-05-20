@@ -30,11 +30,6 @@ CREATE TABLE users_have_projects (
 
 /**/
 
-ALTER TABLE users ALTER COLUMN username VARCHAR(10)
-ALTER TABLE users ALTER COLUMN password VARCHAR(8)
-
-/**/
-
 DROP TABLE	users_have_projects,
 			users,
 			projects 
@@ -42,7 +37,7 @@ DROP TABLE	users_have_projects,
 CREATE TABLE users (
 	id			INT IDENTITY(1,1) PRIMARY KEY,
 	name		VARCHAR(45) NOT NULL,
-	username	VARCHAR(45) UNIQUE,
+	username	VARCHAR(45) CONSTRAINT username_unique UNIQUE,
 	password	VARCHAR(45) DEFAULT('123mudar'),
 	email		VARCHAR(45) NOT NULL
 )
@@ -53,6 +48,9 @@ CREATE TABLE projects (
 	description	VARCHAR(45) NOT NULL,
 	date		DATE CHECK(date > CONVERT(DATE, '01/09/2014'))
 )
+ALTER TABLE users DROP CONSTRAINT username_unique
+ALTER TABLE users ALTER COLUMN username VARCHAR(10)
+ALTER TABLE users ALTER COLUMN password VARCHAR(8)
 
 CREATE TABLE users_have_projects (
 	users_id	INT NOT NULL,
