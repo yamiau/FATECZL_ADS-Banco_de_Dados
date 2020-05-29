@@ -84,17 +84,12 @@ WHERE	id IN
 --aniversário esse ano), dos funcionários
 
 SELECT	nome + ' ' + sobrenome AS nome_completo,
-		CASE WHEN (DATEDIFF(MONTH, data_nasc, GETDATE()) < 0) THEN
-			DATEDIFF(YEAR, data_nasc, GETDATE()) 
-		ELSE CASE WHEN (DATEDIFF(MONTH, data_nasc, GETDATE()) = 0) THEN
-			(CASE WHEN (DATEDIFF(DAY, data_nasc, GETDATE()) = 0) THEN
-				DATEDIFF(YEAR, data_nasc, GETDATE()) 
-			ELSE (CASE WHEN (DATEDIFF(DAY, data_nasc, GETDATE()) > 0) THEN
-				DATEDIFF(YEAR, data_nasc, GETDATE())
-				ELSE DATEDIFF(YEAR, data_nasc, GETDATE()) -1
-				END AS idade)
-			END AS idade)
-		END AS idade
+		DATEDIFF(YEAR, data_nasc, GETDATE()) AS idade,
+		CASE WHEN ( MONTH(data_nasc)- MONTH(GETDATE())  > 0 ) THEN 'nao'
+		ELSE 
+			CASE WHEN ( DAY(data_nasc)- DAY(GETDATE()) > 0 ) THEN 'nao'
+			ELSE 
+			'sim'
+			END 
+		END AS idade_completa
 FROM	funcionario
-
--- /\ PS EU DESISTO
