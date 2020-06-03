@@ -579,7 +579,7 @@ SELECT	SUBSTRING(a.ra, 1, 9) + '-' + SUBSTRING(a.ra, 10, 1) as ra_aluno,
 		CASE WHEN (LEN(a.nome) >= 30) THEN SUBSTRING(a.nome, 1, 29) + '.' 
 		ELSE 
 			a.nome 
-		END AS nome_aluno 
+		END AS nome_aluno
 FROM	materias m, alunomateria am, alunos a
 WHERE	m.id = am.id_materia  AND 
 		am.ra_aluno = a.ra AND
@@ -592,10 +592,52 @@ SELECT 	SUBSTRING(a.ra, 1, 9) + '-' + SUBSTRING(a.ra, 10, 1) as ra_aluno,
 		CASE WHEN (LEN(a.nome) >= 30) THEN SUBSTRING(a.nome, 1, 29) + '.' 
 		ELSE 
 			a.nome 
-		END AS nome_aluno,
-		n.nota as nota_aluno
-FROM	notas n, materias m, alunos a
+		END AS nome_aluno, 
+		n.nota,
+		av.tipo, 
+		av.peso, 
+		CAST(n.nota * av.peso AS DECIMAL(4,2)) AS nota_peso
+FROM	notas n, materias m, alunos a, avaliacoes av
 WHERE	n.ra_aluno = a.ra AND
 		n.id_materia = m.id AND
 		m.nome = 'Banco de Dados'
 ORDER BY a.nome ASC
+
+-- teacher's version:
+SELECT m.nome AS nome_materia, 
+		SUBSTRING(n.ra_aluno, 1, 9) + '-' + SUBSTRING(n.ra_aluno, 10, 1) AS ra, 
+		CASE WHEN (LEN(a.nome) >= 30) THEN
+			SUBSTRING(a.nome, 1, 29)+'.'
+		ELSE 
+			a.nome
+		END AS nome_aluno,
+		av.tipo, av.peso, n.nota,
+		CAST (n.nota * av.peso AS DECIMAL(7,1)) AS nota_peso 
+FROM	materias m, notas n, alunos a, avaliacoes av 
+WHERE	m.id = n.id_materia
+		AND a.ra = n.ra_aluno
+		AND av.id = n.id_avaliacao /* why??? */
+		AND m.nome = 'Banco de Dados'
+ORDER BY a.nome ASC
+
+--Alunos não matriculados
+--OUTER JOIN
+
+SELECT	SUBSTRING(a.ra, 1, 9) + '-' + SUBSTRING(a.ra, 10, 1) as ra_aluno,
+		CASE WHEN (LEN(a.nome) >= 30) THEN SUBSTRING(a.nome, 1, 29) + '.' 
+		ELSE 
+			a.nome 
+		END AS nome_aluno
+FROM	alunos a 
+LEFT JOIN alunomateria am ON a.ra = am.ra_aluno
+WHERE am.ra_aluno IS NULL
+ORDER BY a.nome ASC
+
+--Nome de matéria que não tem nota cadastrada
+
+SELECT	m.id as id_materia,
+		m.nome as nome_materia
+FROM	materias m
+LEFT JOIN notas n ON m.id = n.id_materia
+WHERE	n.id_materia IS NULL
+ORDER BY m.nome ASC
