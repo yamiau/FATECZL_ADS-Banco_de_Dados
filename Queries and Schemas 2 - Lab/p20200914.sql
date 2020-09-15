@@ -30,7 +30,7 @@ PRIMARY KEY (codigo, produto)
 FOREIGN KEY (produto) REFERENCES produto (idProduto))
 
 
--- Inserir produto e transação
+-- Inserir produto e transaÃ§Ã£o 
 
 DROP PROCEDURE sp_insere
 CREATE PROCEDURE sp_insere(@idProduto INT, @nome VARCHAR(100), @valor DECIMAL(7,2), @tipo CHAR(1), @qtd INT)
